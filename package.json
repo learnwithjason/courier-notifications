@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.23.1",
+    "@clerk/clerk-sdk-node": "^4.12.1",
     "@netlify/functions": "^1.6.0",
+    "@trycourier/courier": "^4.8.0",
     "@trycourier/react-inbox": "^3.9.1",
     "@trycourier/react-provider": "^3.9.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "svix": "^1.7.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.2",
