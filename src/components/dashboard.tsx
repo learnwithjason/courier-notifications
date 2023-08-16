@@ -4,7 +4,6 @@ import {
 	SignedOut,
 	UserButton,
 } from '@clerk/clerk-react';
-import { Notifications } from './notifications';
 
 import styles from './dashboard.module.css';
 
@@ -18,7 +17,6 @@ export const Dashboard = () => {
 
 				<nav className={styles.nav}>
 					<SignedIn>
-						<Notifications />
 						<UserButton
 							appearance={{
 								elements: {
