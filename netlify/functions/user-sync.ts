@@ -1,6 +1,11 @@
 import type { Handler } from '@netlify/functions';
 import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import { Webhook } from 'svix';
+import { CourierClient } from '@trycourier/courier';
+
+const courier = CourierClient({
+	authorizationToken: process.env.COURIER_PROD_AUTH_TOKEN,
+});
 
 type ProfileData = {
 	email?: string;
@@ -34,7 +39,6 @@ function getProfileDetails({ email_addresses, phone_numbers }): ProfileData {
 }
 
 export const handler: Handler = async (req) => {
-	// ensure the webhook is valid before doing anything
 	if (!validateWebhook(req)) {
 		return {
 			statusCode: 400,
@@ -44,33 +48,25 @@ export const handler: Handler = async (req) => {
 
 	const event = JSON.parse(req.body ?? '') as WebhookEvent;
 
-	// the API endpoint and headers are the same for all calls below
-	const courierEndpoint = `https://api.courier.com/profiles/${event.data.id}`;
-	const headers = {
-		Accept: 'application/json',
-		'Content-Type': 'application/json',
-		Authorization: `Bearer ${process.env.COURIER_PROD_AUTH_TOKEN}`,
-	};
-
 	switch (event.type) {
-		// if a user is created or updated in Clerk, add them to Courier as well
 		case 'user.created':
 		case 'user.updated':
-			await fetch(courierEndpoint, {
-				method: 'POST',
-				headers,
-				body: JSON.stringify({
-					profile: getProfileDetails(event.data),
-				}),
+			await courier.replaceProfile({
+				recipientId: event.data.id,
+				profile: getProfileDetails(event.data),
 			});
 			break;
 
-		// if a user is deleted in Clerk, remove them from Courier as well
 		case 'user.deleted':
-			await fetch(courierEndpoint, { method: 'DELETE', headers });
+			if (!event.data.id) {
+				break;
+			}
+
+			await courier.deleteProfile({
+				recipientId: event.data.id,
+			});
 			break;
 
-		// if the event type is unknown, assume the request is no good
 		default:
 			return {
 				statusCode: 400,
@@ -78,7 +74,6 @@ export const handler: Handler = async (req) => {
 			};
 	}
 
-	// return 200 to let Clerk know the webhook succeeded
 	return {
 		statusCode: 200,
 		body: 'OK',
