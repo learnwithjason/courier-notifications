@@ -12,9 +12,9 @@
     "@clerk/clerk-react": "^4.23.1",
     "@clerk/clerk-sdk-node": "^4.12.1",
     "@netlify/functions": "^1.6.0",
-    "@trycourier/courier": "^4.8.0",
-    "@trycourier/react-inbox": "^3.9.1",
-    "@trycourier/react-provider": "^3.9.1",
+    "@trycourier/courier": "^5.0.0",
+    "@trycourier/react-inbox": "^4.2.0",
+    "@trycourier/react-provider": "^4.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,8 +24,8 @@
     "@types/node": "^20.3.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
-    "typescript": "^4.9.3",
+    "@vitejs/plugin-react": "^4.0.4",
+    "typescript": "^5.1.6",
     "vite": "^4.1.0"
   }
 }
