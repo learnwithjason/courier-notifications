@@ -29,6 +29,8 @@ html {
 }
 
 .notifications-wrapper {
+	align-items: center;
+	display: flex;
 	position: relative;
 	z-index: 10;
 }
